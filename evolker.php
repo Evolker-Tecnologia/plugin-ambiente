@@ -33,7 +33,7 @@ function adicionarVersaoBetaNoTopo()
 
     <div class="aviso-dev">
         <p class="color:red">
-            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank">Ambiente: <?= $localAtual ?> | Tema <?= $temaAtual ?> v<?= $versaoTemaAtual ?></a>
+            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> v<?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
         </p>
     </div>
 
