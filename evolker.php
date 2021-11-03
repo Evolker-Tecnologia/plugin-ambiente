@@ -6,6 +6,7 @@
 
 function adicionarVersaoBetaNoTopo()
 {
+    $localAtual = pegarLocalAtual();
     $corLocalAtual = pegarCorParaLocalAtual();
     $temaAtual = wp_get_theme()->get_stylesheet();
     $versaoTemaAtual = wp_get_theme()->get("Version");
@@ -32,7 +33,7 @@ function adicionarVersaoBetaNoTopo()
 
     <div class="aviso-dev">
         <p class="color:red">
-            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank">Tema <?= $temaAtual ?> v<?= $versaoTemaAtual ?></a>
+            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank">Ambiente: <?= $localAtual ?> | Tema <?= $temaAtual ?> v<?= $versaoTemaAtual ?></a>
         </p>
     </div>
 
@@ -71,6 +72,20 @@ function pegarCorParaLocalAtual()
         return ["corDeFundo"=>"rgba(0, 128, 0, 0.28)", "corDoTexto"=>"#024902", "corDoTextoHover"=>"#025d02"];
     } else if($localAtual === "hom.evolker") {
         return ["corDeFundo"=>"rgba(0, 26, 128, 0.28)", "corDoTexto"=>"#020849", "corDoTextoHover"=>"#05025d"];;
+    }
+}
+
+
+function pegarLocalAtual()
+{
+    $urlAtual = verificarUrl();
+
+    if($urlAtual === "dev.evolker") {
+        return "Dev";
+    } else if($urlAtual === "hom.evolker") {
+        return "Homologação";
+    } else if($urlAtual === "localhost") {
+        return "Local";
     }
 }
 
