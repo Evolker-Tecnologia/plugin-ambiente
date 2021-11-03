@@ -7,7 +7,8 @@
 function adicionarVersaoBetaNoTopo()
 {
     $corLocalAtual = pegarCorParaLocalAtual();
-
+    $temaAtual = wp_get_theme()->get_stylesheet();
+    $versaoTemaAtual = wp_get_theme()->get("Version");
     ?>
 
     <style>
@@ -31,7 +32,7 @@ function adicionarVersaoBetaNoTopo()
 
     <div class="aviso-dev">
         <p class="color:red">
-            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank">Beta v0.6 (24/10/2021 - 15h20)</a>
+            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank">Tema <?= $temaAtual ?> v<?= $versaoTemaAtual ?></a>
         </p>
     </div>
 
