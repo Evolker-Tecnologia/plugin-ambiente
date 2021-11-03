@@ -89,6 +89,8 @@ function pegarLocalAtual()
     }
 }
 
-add_action('wp_head', 'adicionarVersaoBetaNoTopo');
+if(!is_admin()) {
+    add_action('wp_head', 'adicionarVersaoBetaNoTopo');
+}
 
 ?>
