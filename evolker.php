@@ -14,7 +14,7 @@ function adicionarVersaoBetaNoTopo()
 
     <style>
         .aviso-dev-admin {
-            position: fixed;
+            position: fixed !important;
             z-index: 998;
             left: 1%;
         }
@@ -25,6 +25,7 @@ function adicionarVersaoBetaNoTopo()
             width: 100%;
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
             justify-content: center;
+            position: relative;
         }
 
         .aviso-dev p a {
@@ -35,13 +36,51 @@ function adicionarVersaoBetaNoTopo()
             color: <?= $corLocalAtual["corDoTextoHover"] ?>;
         }
 
+        .fecha-aviso {
+            color: black;
+            background-color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 56%;
+            position: absolute;
+            text-decoration: none;
+            right: 40px;
+            top: 6px;
+            transition: box-shadow .2s;
+            margin: 0; 
+            cursor: pointer;
+        }
+
+        .fecha-aviso:hover {
+            color: black;
+            box-shadow: 0px 0px 5px white;
+        }
+
+        @keyframes someAviso {
+            from {clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)}
+            to {clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)}
+        }
+
     </style>
 
     <div class="aviso-dev <?= is_admin()? 'aviso-dev-admin': ''?>">
         <p class="color:red">
             <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> v<?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
         </p>
+        <p class="fecha-aviso" onclick="fechaAviso()">
+            X
+        </p>
     </div>
+
+    <script>
+        function fechaAviso() {
+            let aviso = document.querySelector(".aviso-dev")
+            aviso.style.animation = "someAviso .3s"
+            setTimeout(() => {
+                aviso.style.display = "none"
+            }, 300);
+        }
+    </script>
 
     <?php
 }
