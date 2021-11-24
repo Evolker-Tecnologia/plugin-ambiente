@@ -13,6 +13,12 @@ function adicionarVersaoBetaNoTopo()
     ?>
 
     <style>
+        .aviso-dev-admin {
+            position: fixed;
+            z-index: 998;
+            left: 1%;
+        }
+
         .aviso-dev {
             display: flex;
             max-width: 100%;
@@ -31,7 +37,7 @@ function adicionarVersaoBetaNoTopo()
 
     </style>
 
-    <div class="aviso-dev">
+    <div class="aviso-dev <?= is_admin()? 'aviso-dev-admin': ''?>">
         <p class="color:red">
             <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> v<?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
         </p>
@@ -91,6 +97,8 @@ function pegarLocalAtual()
 
 if(!is_admin()) {
     add_action('wp_head', 'adicionarVersaoBetaNoTopo');
+} else {
+    add_action( 'wp_before_admin_bar_render', 'adicionarVersaoBetaNoTopo');
 }
 
 ?>
