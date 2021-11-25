@@ -1,0 +1,10 @@
+# MAC
+**/.DS_STORE
+
+# WINDOWS
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+nbproject/
