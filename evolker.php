@@ -27,10 +27,12 @@ function adicionarVersaoBetaNoTopo()
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
             justify-content: center;
             z-index: 1500;
+            border-bottom: 2px solid <?= $corLocalAtual["corDoTexto"] ?>;
         }
 
         .aviso-dev p a {
             color: <?= $corLocalAtual["corDoTexto"] ?>;
+            font-weight: 400;
         }
 
         .aviso-dev p a:hover {
@@ -113,9 +115,10 @@ function pegarCorParaLocalAtual()
     $localAtual = verificarUrl();
 
     if($localAtual === "localhost") {
-        return ["corDeFundo"=>"rgba(124, 128, 0, 0.28)", "corDoTexto"=>"#494802", "corDoTextoHover"=>"#5d4b02"];
+        return ["corDeFundo"=>"rgb(0 44 219)", "corDoTexto"=>"#020849", "corDoTextoHover"=>"#05025d"];;
+        //return ["corDeFundo"=>"rgb(255, 204, 29)", "corDoTexto"=>"#494802", "corDoTextoHover"=>"#5d4b02"];
     } else if($localAtual === "dev.evolker") {
-        return ["corDeFundo"=>"rgba(0, 128, 0, 0.28)", "corDoTexto"=>"#024902", "corDoTextoHover"=>"#025d02"];
+        return ["corDeFundo"=>"#116530", "corDoTexto"=>"rgb(0 42 10)", "corDoTextoHover"=>"rgb(0 42 10)"];
     } else if($localAtual === "hom.evolker") {
         return ["corDeFundo"=>"rgba(0, 26, 128, 0.28)", "corDoTexto"=>"#020849", "corDoTextoHover"=>"#05025d"];;
     }
