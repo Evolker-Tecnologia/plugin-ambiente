@@ -5,7 +5,7 @@
  * Description: Mostra uma barra fixa no topo mostrando o ambiente em que o projeto está rodando.
  * Author:      Evolker Tecnologia
  * Author URI:  https://evolker.com.br
- */
+*/
 
 function adicionarVersaoBetaNoTopo()
 {
@@ -35,7 +35,8 @@ function adicionarVersaoBetaNoTopo()
 
         .aviso-dev p a {
             color: <?= $corLocalAtual["corDoTexto"] ?>;
-            font-weight: 400;
+            font-weight: 400 !important;
+            text-decoration: underline;
         }
 
         .aviso-dev p a:hover {
@@ -118,8 +119,7 @@ function pegarCorParaLocalAtual()
     $localAtual = verificarUrl();
 
     if($localAtual === "localhost") {
-        return ["corDeFundo"=>"rgb(0 44 219)", "corDoTexto"=>"#020849", "corDoTextoHover"=>"#05025d"];;
-        //return ["corDeFundo"=>"rgb(255, 204, 29)", "corDoTexto"=>"#494802", "corDoTextoHover"=>"#5d4b02"];
+        return ["corDeFundo"=>"rgb(255, 204, 29)", "corDoTexto"=>"#494802", "corDoTextoHover"=>"#5d4b02"];
     } else if($localAtual === "dev.evolker") {
         return ["corDeFundo"=>"#116530", "corDoTexto"=>"rgb(0 42 10)", "corDoTextoHover"=>"rgb(0 42 10)"];
     } else if($localAtual === "hom.evolker") {
