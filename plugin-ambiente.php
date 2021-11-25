@@ -36,6 +36,7 @@ function adicionarVersaoBetaNoTopo()
         .aviso-dev p {
             display: flex;
             align-items: center;
+            margin: 0 !important;
         }
 
         .aviso-dev p a {
@@ -43,7 +44,7 @@ function adicionarVersaoBetaNoTopo()
             font-size: 17px;
             color: <?= $corLocalAtual["corDoTexto"] ?>;
             font-weight: 500 !important;
-            text-decoration: underline;
+            text-decoration: none !important;
         }
 
         .aviso-dev p a:hover {
