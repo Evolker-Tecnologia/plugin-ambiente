@@ -16,27 +16,33 @@ function adicionarVersaoBetaNoTopo()
     ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.1/font/bootstrap-icons.min.css" integrity="sha512-WYaDo1TDjuW+MPatvDarHSfuhFAflHxD87U9RoB4/CSFh24/jzUHfirvuvwGmJq0U7S9ohBXy4Tfmk2UKkp2gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap');
         .aviso-dev-admin {
-            position: fixed !important;
-            z-index: 998;
             left: 1%;
         }
 
         .aviso-dev {
             position: fixed;
             display: flex;
+            justify-content: space-between;
             max-width: 100%;
             width: 100%;
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
-            justify-content: center;
             z-index: 9999;
             left: 0;
             border-bottom: 2px solid <?= $corLocalAtual["corDoTexto"] ?>;
         }
 
+        .aviso-dev p {
+            display: flex;
+            align-items: center;
+        }
+
         .aviso-dev p a {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
             color: <?= $corLocalAtual["corDoTexto"] ?>;
-            font-weight: 400 !important;
+            font-weight: 500 !important;
             text-decoration: underline;
         }
 
@@ -49,18 +55,10 @@ function adicionarVersaoBetaNoTopo()
             font-weight: 800;
             padding: 5px 10px;
             font-size: 14px;
-            position: absolute;
             text-decoration: none;
-            right: 40px;
-            top: 6px;
             transition: color .2s;
             margin: 0; 
             cursor: pointer;
-        }
-
-        .fecha-aviso-esquerda { 
-            right: unset;
-            left: 40px;
         }
 
         .fecha-aviso:hover {
@@ -79,11 +77,11 @@ function adicionarVersaoBetaNoTopo()
     </style>
 
     <div class="aviso-dev <?= is_admin()? 'aviso-dev-admin': ''?>">
-        <p class="color:red">
-            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> v<?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
-        </p>
         <p class="fecha-aviso fecha-aviso-esquerda" onclick="fechaAviso()">
             <i class="bi bi-x"></i>
+        </p>
+        <p class="color:red">
+            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> v<?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
         </p>
         <p class="fecha-aviso" onclick="fechaAviso()">
             <i class="bi bi-x"></i>
