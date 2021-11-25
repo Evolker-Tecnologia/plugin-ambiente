@@ -29,7 +29,8 @@ function adicionarVersaoBetaNoTopo()
             width: 100%;
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
             justify-content: center;
-            z-index: 1500;
+            z-index: 9999;
+            left: 0;
             border-bottom: 2px solid <?= $corLocalAtual["corDoTexto"] ?>;
         }
 
@@ -58,6 +59,11 @@ function adicionarVersaoBetaNoTopo()
             cursor: pointer;
         }
 
+        .fecha-aviso-esquerda { 
+            right: unset;
+            left: 40px;
+        }
+
         .fecha-aviso:hover {
             color: black;
             box-shadow: 0px 0px 5px white;
@@ -73,6 +79,9 @@ function adicionarVersaoBetaNoTopo()
     <div class="aviso-dev <?= is_admin()? 'aviso-dev-admin': ''?>">
         <p class="color:red">
             <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> v<?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
+        </p>
+        <p class="fecha-aviso fecha-aviso-esquerda" onclick="fechaAviso()">
+            X
         </p>
         <p class="fecha-aviso" onclick="fechaAviso()">
             X
