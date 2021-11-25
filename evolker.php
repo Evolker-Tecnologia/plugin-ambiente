@@ -20,12 +20,13 @@ function adicionarVersaoBetaNoTopo()
         }
 
         .aviso-dev {
+            position: fixed;
             display: flex;
             max-width: 100%;
             width: 100%;
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
             justify-content: center;
-            position: relative;
+            z-index: 1500;
         }
 
         .aviso-dev p a {
