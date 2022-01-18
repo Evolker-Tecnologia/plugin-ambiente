@@ -11,7 +11,8 @@ function adicionarVersaoBetaNoTopo()
 {
     $localAtual = pegarLocalAtual();
     $corLocalAtual = pegarCorParaLocalAtual();
-    $temaAtual = wp_get_theme()->get_stylesheet();
+    $temaAtualPasta = wp_get_theme()->get_stylesheet();
+    $temaAtual = wp_get_theme()->name;
     $versaoTemaAtual = wp_get_theme()->get("Version");
     ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.1/font/bootstrap-icons.min.css" integrity="sha512-WYaDo1TDjuW+MPatvDarHSfuhFAflHxD87U9RoB4/CSFh24/jzUHfirvuvwGmJq0U7S9ohBXy4Tfmk2UKkp2gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -82,7 +83,7 @@ function adicionarVersaoBetaNoTopo()
             <i class="bi bi-x"></i>
         </p>
         <p class="color:red">
-            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> v<?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
+            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
         </p>
         <p class="fecha-aviso" onclick="fechaAviso()">
             <i class="bi bi-x"></i>
