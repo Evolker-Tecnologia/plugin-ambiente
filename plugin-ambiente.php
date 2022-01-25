@@ -6,6 +6,13 @@
  * Author:      Evolker Tecnologia
  * Author URI:  https://evolker.com.br
 */
+require 'conexao.pdo.php';
+
+function definirQueAlguemEstaMexendo()
+{
+    global $con;
+    $con->query("INSERT INTO plugin_ambiente (alguem_esta_mexendo) VALUES (1)");
+}
 
 function adicionarVersaoBetaNoTopo()
 {
@@ -83,7 +90,10 @@ function adicionarVersaoBetaNoTopo()
             <i class="bi bi-x"></i>
         </p>
         <p class="color:red">
+            <span class="estado"></span>
             <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
+            <button onclick="definirEstouMexendo()">Estou mexendo!</button>
+            <button onclick="definirNaoEstouMexendo()">Não estou mexendo!</button>
         </p>
         <p class="fecha-aviso" onclick="fechaAviso()">
             <i class="bi bi-x"></i>
@@ -91,13 +101,54 @@ function adicionarVersaoBetaNoTopo()
     </div>
 
     <script>
+        let estadoDaAplicacao = document.querySelector('.estado')
+
+        function pegarEstadoAtual() {
+            let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/estado" ?>'
+            fetch(caminhoApi)
+            .then(function(resposta) {
+                return resposta.text()
+            })
+            .then(function(resposta) {
+                if(resposta == 1) {
+                    estadoDaAplicacao.innerText = ''
+                } else if(resposta == 2) {
+                    estadoDaAplicacao.innerText = 'Alguém está mexendo |'
+                }
+            })
+        }
+
         function fechaAviso() {
             let aviso = document.querySelector(".aviso-dev")
             aviso.style.animation = "someAviso .3s"
             setTimeout(() => {
                 aviso.style.display = "none"
-            }, 300);
+            }, 300)
         }
+
+        function definirEstouMexendo() {
+            let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/mexendo?definirMexendo=2"; ?>'
+            fetch(caminhoApi)
+            .then(function(resposta) {
+                return resposta.text()
+            })
+            .then(function(resposta) {
+                return resposta
+            })
+        }
+
+        function definirNaoEstouMexendo() {
+            let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/mexendo?definirMexendo=1"; ?>'
+            fetch(caminhoApi)
+            .then(function(resposta) {
+                return resposta.text()
+            })
+            .then(function(resposta) {
+                return resposta
+            })
+        }
+
+        window.onload = pegarEstadoAtual
     </script>
 
     <?php
@@ -158,4 +209,34 @@ if(!is_admin()) {
     add_action( 'wp_before_admin_bar_render', 'adicionarVersaoBetaNoTopo');
 }
 
+function definirEstadoDoAmbiente($data) {
+    $queryParams = $data->get_query_params()["definirMexendo"];
+    global $con;
+
+    if(isset($queryParams)) {
+        if($queryParams === '1') {
+            $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 1 WHERE id = 0");
+        } else if($queryParams === '2') {
+            $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 2 WHERE id = 0");
+        }
+    }
+}
+
+function pegarEstadoDoAmbiente($data) {
+    global $con;
+    $resposta = $con->query("SELECT * FROM plug_ambiente");
+    echo $resposta->fetchAll(PDO::FETCH_ASSOC)[0]["alguem_esta_mexendo"];
+}
+
+add_action('rest_api_init', function () {
+    register_rest_route( 'plug-ambiente/', 'mexendo/', array(
+        'methods' => 'GET',
+        'callback' => 'definirEstadoDoAmbiente',
+    ));
+
+    register_rest_route( 'plug-ambiente/', 'estado/', array(
+        'methods' => 'GET',
+        'callback' => 'pegarEstadoDoAmbiente',
+    ));
+});
 ?>
