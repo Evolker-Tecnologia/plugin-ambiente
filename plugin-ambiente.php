@@ -129,22 +129,16 @@ function adicionarVersaoBetaNoTopo()
         function definirEstouMexendo() {
             let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/mexendo?definirMexendo=2"; ?>'
             fetch(caminhoApi)
-            .then(function(resposta) {
-                return resposta.text()
-            })
-            .then(function(resposta) {
-                return resposta
+            .then(function() {
+                pegarEstadoAtual()
             })
         }
 
         function definirNaoEstouMexendo() {
             let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/mexendo?definirMexendo=1"; ?>'
             fetch(caminhoApi)
-            .then(function(resposta) {
-                return resposta.text()
-            })
-            .then(function(resposta) {
-                return resposta
+            .then(function() {
+                pegarEstadoAtual()
             })
         }
 
