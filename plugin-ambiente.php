@@ -175,11 +175,11 @@ function pegarCorParaLocalAtual()
     $localAtual = verificarUrl();
 
     if($localAtual === "localhost") {
-        return ["corDeFundo"=>"rgba(241, 196, 15, .6)", "corDoTexto"=>"#494802", "corDoTextoHover"=>"#5d4b02"];
+        return ["corDeFundo"=>"rgba(241, 196, 15, .6)", "corDoTexto"=>"#494802", "corDoTextoHover"=>"#5d4b02"]; // Amarelo
     } else if($localAtual === "dev.evolker") {
-        return ["corDeFundo"=>"rgba(46, 204, 113, .6)", "corDoTexto"=>"rgb(0 42 10)", "corDoTextoHover"=>"rgb(0 42 10)"];
+        return ["corDeFundo"=>"rgba(46, 204, 113, .6)", "corDoTexto"=>"rgb(0 42 10)", "corDoTextoHover"=>"rgb(0 42 10)"];  // Verde
     } else if($localAtual === "hom.evolker") { 
-        return ["corDeFundo"=>"rgba(52, 152, 219, .6)", "corDoTexto"=>"#020849", "corDoTextoHover"=>"#05025d"];
+        return ["corDeFundo"=>"rgba(52, 152, 219, .6)", "corDoTexto"=>"#020849", "corDoTextoHover"=>"#05025d"]; // Azul
     }
 }
 
