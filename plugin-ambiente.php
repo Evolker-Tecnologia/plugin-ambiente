@@ -76,6 +76,11 @@ function adicionarVersaoBetaNoTopo()
             to {clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)}
         }
 
+        @keyframes apareceAviso {
+            from {clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)}
+            to {clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)}
+        }
+
     </style>
 
     <div class="aviso-dev <?= is_admin()? 'aviso-dev-admin': ''?>">
@@ -97,6 +102,13 @@ function adicionarVersaoBetaNoTopo()
             setTimeout(() => {
                 aviso.style.display = "none"
             }, 300);
+
+            if(location.href.indexOf("localhost") !== -1) {
+                setTimeout(() => {
+                    aviso.style.display = "flex"
+                    aviso.style.animation = "apareceAviso .3s"
+                }, 400);
+            }
         }
     </script>
 
