@@ -25,19 +25,29 @@ function adicionarVersaoBetaNoTopo()
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.1/font/bootstrap-icons.min.css" integrity="sha512-WYaDo1TDjuW+MPatvDarHSfuhFAflHxD87U9RoB4/CSFh24/jzUHfirvuvwGmJq0U7S9ohBXy4Tfmk2UKkp2gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap');
-        .aviso-dev-admin {
-            left: 1%;
-        }
-
-        .aviso-dev {
+        .container-aviso-dev {
             position: fixed;
-            display: flex;
-            justify-content: space-between;
             max-width: 100%;
             width: 100%;
-            background-color: <?= $corLocalAtual["corDeFundo"] ?>;
             z-index: 9999;
             left: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container-aviso-dev-admin {
+            left: 1%;
+        }
+        
+        .aviso-dev {
+            /*position: fixed;
+            max-width: 100%;
+            width: 100%;
+            z-index: 9999;
+            left: 0;*/
+            display: flex;
+            justify-content: space-between;
+            background-color: <?= $corLocalAtual["corDeFundo"] ?>;
             border-bottom: 2px solid <?= $corLocalAtual["corDoTexto"] ?>;
         }
 
@@ -83,28 +93,45 @@ function adicionarVersaoBetaNoTopo()
             to {clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)}
         }
 
+        .estado {
+            text-align: center; 
+        }
+        
+        .mexendo {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: rgb(241 15 15 / 60%);
+        }
+
     </style>
 
-    <div class="aviso-dev <?= is_admin()? 'aviso-dev-admin': ''?>">
-        <p class="fecha-aviso fecha-aviso-esquerda" onclick="fechaAviso()">
-            <i class="bi bi-x"></i>
-        </p>
-        <p class="color:red">
+    <div class="container-aviso-dev <?= is_admin()? 'container-aviso-dev-admin': ''?>">
+        <div class="aviso-dev">
+            <p class="fecha-aviso fecha-aviso-esquerda" onclick="fechaAviso()">
+                <i class="bi bi-x"></i>
+            </p>
+            <p class="color:red">
+                <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
+                <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Estou mexendo!</button>
+            </p>
+            <p class="fecha-aviso" onclick="fechaAviso()">
+                <i class="bi bi-x"></i>
+            </p>
+        </div>
+        <div class="aviso-dev mexendo">
             <span class="estado"></span>
-            <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
-            <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Estou mexendo!</button>
-            <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
-        </p>
-        <p class="fecha-aviso" onclick="fechaAviso()">
-            <i class="bi bi-x"></i>
-        </p>
+                <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
+        </div>
     </div>
 
     <script>
-        let btnEstouMexendo = document.querySelector('.btnEstouMexendo')
-        let btnNaoEstouMexendo = document.querySelector('.btnNaoEstouMexendo')
+        let btnEstouMexendo = document.querySelector(".btnEstouMexendo")
+        let btnNaoEstouMexendo = document.querySelector(".btnNaoEstouMexendo")
+        let containerMexendo = document.querySelector(".mexendo")
 
-        let estadoDaAplicacao = document.querySelector('.estado')
+        let estadoDaAplicacao = document.querySelector(".estado")
 
         function pegarEstadoAtual() {
             let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/estado" ?>'
@@ -117,16 +144,18 @@ function adicionarVersaoBetaNoTopo()
                     btnNaoEstouMexendo.disabled = "true"
                     btnEstouMexendo.removeAttribute("disabled")
                     estadoDaAplicacao.innerText = ""
+                    containerMexendo.style.display = "none"
                 } else if(resposta == 2) {
                     btnNaoEstouMexendo.removeAttribute("disabled")
                     btnEstouMexendo.disabled = "true"
-                    estadoDaAplicacao.innerText = "Alguém está mexendo |"
+                    estadoDaAplicacao.innerText = "Alguém está mexendo"
+                    containerMexendo.style.display = "flex"
                 }
             })
         }
 
         function fechaAviso() {
-            let aviso = document.querySelector(".aviso-dev")
+            let aviso = document.querySelector(".container-aviso-dev")
             aviso.style.animation = "someAviso .3s"
             setTimeout(() => {
                 aviso.style.display = "none"
