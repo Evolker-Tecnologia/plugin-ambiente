@@ -7,17 +7,17 @@
  * Author URI:  https://evolker.com.br
 */
 
-function adicionarVersaoBetaNoTopo()
-{
+function adicionarBarraSuperior() {
     $localAtual = pegarLocalAtual();
     $corLocalAtual = pegarCorParaLocalAtual();
     $temaAtualPasta = wp_get_theme()->get_stylesheet();
     $temaAtual = wp_get_theme()->name;
     $versaoTemaAtual = wp_get_theme()->get("Version");
     ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.1/font/bootstrap-icons.min.css" integrity="sha512-WYaDo1TDjuW+MPatvDarHSfuhFAflHxD87U9RoB4/CSFh24/jzUHfirvuvwGmJq0U7S9ohBXy4Tfmk2UKkp2gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.1/font/bootstrap-icons.min.css" integrity="sha512-WYaDo1TDjuW+MPatvDarHSfuhFAflHxD87U9RoB4/CSFh24/jzUHfirvuvwGmJq0U7S9ohBXy4Tfmk2UKkp2gA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap');
+
         .aviso-dev-admin {
             left: 1%;
         }
@@ -31,7 +31,7 @@ function adicionarVersaoBetaNoTopo()
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
             z-index: 9999;
             left: 0;
-            border-bottom: 2px solid <?= $corLocalAtual["corDoTexto"] ?>;
+            border-bottom: 2px solid<?= $corLocalAtual["corDoTexto"] ?>;
         }
 
         .aviso-dev p {
@@ -59,7 +59,7 @@ function adicionarVersaoBetaNoTopo()
             font-size: 14px;
             text-decoration: none;
             transition: color .2s;
-            margin: 0; 
+            margin: 0;
             cursor: pointer;
         }
 
@@ -72,18 +72,26 @@ function adicionarVersaoBetaNoTopo()
         }
 
         @keyframes someAviso {
-            from {clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)}
-            to {clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)}
+            from {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)
+            }
+            to {
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)
+            }
         }
 
         @keyframes apareceAviso {
-            from {clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)}
-            to {clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)}
+            from {
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)
+            }
+            to {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)
+            }
         }
 
     </style>
 
-    <div class="aviso-dev <?= is_admin()? 'aviso-dev-admin': ''?>">
+    <div class="aviso-dev <?= is_admin() ? 'aviso-dev-admin' : '' ?>">
         <p class="fecha-aviso fecha-aviso-esquerda" onclick="fechaAviso()">
             <i class="bi bi-x"></i>
         </p>
@@ -104,13 +112,14 @@ function adicionarVersaoBetaNoTopo()
                 aviso.style.display = "none"
             }, 300);
 
-            if(location.href.indexOf("localhost") !== -1) {
+            if (location.href.indexOf("localhost") !== -1) {
                 localStorage.setItem("remover-barra-evolker", "exclua essa tabela para voltar a aparecer a barra")
             }
         }
 
         window.onload = () => {
-            if(localStorage.getItem("remover-barra-evolker")) {
+            console.log('asdf')
+            if (localStorage.getItem("remover-barra-evolker")) {
                 aviso.style.display = "none"
             } else {
                 aviso.style.display = "flex"
@@ -121,19 +130,17 @@ function adicionarVersaoBetaNoTopo()
     <?php
 }
 
-function retornarUrl()
-{
+function retornarUrl() {
     global $wp;
     return home_url($wp->request);
 }
 
-function verificarUrl()
-{
+function verificarUrl() {
     $url = retornarUrl();
     $locais = ["localhost", "dev.evolker", "hom.evolker"];
     $localAtual;
 
-    foreach($locais as $local) {
+    foreach ($locais as $local) {
         if (strpos($url, $local)) {
             $localAtual = $local;
             break;
@@ -143,37 +150,34 @@ function verificarUrl()
     return $localAtual;
 }
 
-function pegarCorParaLocalAtual()
-{
+function pegarCorParaLocalAtual() {
     $localAtual = verificarUrl();
 
-    if($localAtual === "localhost") {
-        return ["corDeFundo"=>"rgba(241, 196, 15, .6)", "corDoTexto"=>"#494802", "corDoTextoHover"=>"#5d4b02"];
-    } else if($localAtual === "dev.evolker") {
-        return ["corDeFundo"=>"rgba(46, 204, 113, .6)", "corDoTexto"=>"rgb(0 42 10)", "corDoTextoHover"=>"rgb(0 42 10)"];
-    } else if($localAtual === "hom.evolker") { 
-        return ["corDeFundo"=>"rgba(52, 152, 219, .6)", "corDoTexto"=>"#020849", "corDoTextoHover"=>"#05025d"];
+    if ($localAtual === "localhost") {
+        return ["corDeFundo" => "rgba(241, 196, 15, .6)", "corDoTexto" => "#494802", "corDoTextoHover" => "#5d4b02"];
+    } else if ($localAtual === "dev.evolker") {
+        return ["corDeFundo" => "rgba(46, 204, 113, .6)", "corDoTexto" => "rgb(0 42 10)", "corDoTextoHover" => "rgb(0 42 10)"];
+    } else if ($localAtual === "hom.evolker") {
+        return ["corDeFundo" => "rgba(52, 152, 219, .6)", "corDoTexto" => "#020849", "corDoTextoHover" => "#05025d"];
     }
 }
 
-
-function pegarLocalAtual()
-{
+function pegarLocalAtual() {
     $urlAtual = verificarUrl();
 
-    if($urlAtual === "dev.evolker") {
+    if ($urlAtual === "dev.evolker") {
         return "Dev";
-    } else if($urlAtual === "hom.evolker") {
+    } else if ($urlAtual === "hom.evolker") {
         return "Homologação";
-    } else if($urlAtual === "localhost") {
+    } else if ($urlAtual === "localhost") {
         return "Local";
     }
 }
 
-if(!is_admin()) {
-    add_action('wp_head', 'adicionarVersaoBetaNoTopo');
+if (!is_admin()) {
+    add_action('wp_head', 'adicionarBarraSuperior');
 } else {
-    add_action( 'wp_before_admin_bar_render', 'adicionarVersaoBetaNoTopo');
+    add_action('wp_before_admin_bar_render', 'adicionarBarraSuperior');
 }
 
 ?>
