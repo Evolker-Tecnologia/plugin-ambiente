@@ -92,8 +92,8 @@ function adicionarVersaoBetaNoTopo()
         <p class="color:red">
             <span class="estado"></span>
             <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
-            <button onclick="definirEstouMexendo()">Estou mexendo!</button>
-            <button onclick="definirNaoEstouMexendo()">Não estou mexendo!</button>
+            <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Estou mexendo!</button>
+            <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
         </p>
         <p class="fecha-aviso" onclick="fechaAviso()">
             <i class="bi bi-x"></i>
@@ -101,6 +101,9 @@ function adicionarVersaoBetaNoTopo()
     </div>
 
     <script>
+        let btnEstouMexendo = document.querySelector('.btnEstouMexendo')
+        let btnNaoEstouMexendo = document.querySelector('.btnNaoEstouMexendo')
+
         let estadoDaAplicacao = document.querySelector('.estado')
 
         function pegarEstadoAtual() {
@@ -111,9 +114,13 @@ function adicionarVersaoBetaNoTopo()
             })
             .then(function(resposta) {
                 if(resposta == 1) {
-                    estadoDaAplicacao.innerText = ''
+                    btnNaoEstouMexendo.disabled = "true"
+                    btnEstouMexendo.removeAttribute("disabled")
+                    estadoDaAplicacao.innerText = ""
                 } else if(resposta == 2) {
-                    estadoDaAplicacao.innerText = 'Alguém está mexendo |'
+                    btnNaoEstouMexendo.removeAttribute("disabled")
+                    btnEstouMexendo.disabled = "true"
+                    estadoDaAplicacao.innerText = "Alguém está mexendo |"
                 }
             })
         }
