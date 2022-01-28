@@ -24,7 +24,7 @@ function adicionarVersaoBetaNoTopo()
 
         .aviso-dev {
             position: fixed;
-            display: flex;
+            display: none;
             justify-content: space-between;
             max-width: 100%;
             width: 100%;
@@ -96,18 +96,24 @@ function adicionarVersaoBetaNoTopo()
     </div>
 
     <script>
+        let aviso = document.querySelector(".aviso-dev")
+
         function fechaAviso() {
-            let aviso = document.querySelector(".aviso-dev")
             aviso.style.animation = "someAviso .3s"
             setTimeout(() => {
                 aviso.style.display = "none"
             }, 300);
 
             if(location.href.indexOf("localhost") !== -1) {
-                setTimeout(() => {
-                    aviso.style.display = "flex"
-                    aviso.style.animation = "apareceAviso .3s"
-                }, 400);
+                localStorage.setItem("remover-barra-evolker", "exclua essa tabela para voltar a aparecer a barra")
+            }
+        }
+
+        window.onload = () => {
+            if(localStorage.getItem("remover-barra-evolker")) {
+                aviso.style.display = "none"
+            } else {
+                aviso.style.display = "flex"
             }
         }
     </script>
