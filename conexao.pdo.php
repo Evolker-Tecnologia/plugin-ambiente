@@ -4,7 +4,7 @@
 if(defined('ABSPATH')) require ABSPATH . "/wp-config.php";
 else{
     // Pedro Henrique (14/40/2021): gambiarra necessária porque incluindo diretamente o wp-config.php gera uma saída inesperada, causando um bug no front-end.
-    $str = file_get_contents('../../../../wp-config.php', true);
+    $str = file_get_contents('../../../wp-config.php', true);
     $re = '/(define\( ?\'DB_.+ \')(.+)?(\'.*\);)/m';
     preg_match_all($re, $str, $matches);
 
@@ -23,3 +23,33 @@ $con = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, ar
 ));
 // set the PDO error mode to exception
 $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Pedro Henrique: em caso de erros no SQL, disparar a exceção
+
+global $con;
+$metodo = $_SERVER['REQUEST_METHOD'];
+$conteudo = file_get_contents('php://input');
+
+switch ($metodo) {
+    case 'GET':
+        if(isset($_GET["estadoAtual"])) {
+            $resposta = $con->query("SELECT * FROM plug_ambiente");
+            $resposta = $resposta->fetchAll(PDO::FETCH_ASSOC)[0]["alguem_esta_mexendo"];
+            header('Content-Type: application/json; charset=UTF8');
+            echo json_encode($resposta, JSON_NUMERIC_CHECK);
+        }
+
+        if(isset($_GET["definirMexendo"])) {
+            if($_GET["definirMexendo"] === '1') {
+                $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 1 WHERE id = 0");
+            } else if($_GET["definirMexendo"] === '2') {
+                $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 2 WHERE id = 0");
+            }
+
+            header('Content-Type: application/json; charset=UTF8');
+            echo json_encode($_GET['definirMexendo'], JSON_NUMERIC_CHECK);
+        }
+
+        break;
+    default:
+        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+        die('{"msg": "Método não encontrado."}');
+}

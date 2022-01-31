@@ -8,14 +8,12 @@
 */
 require 'conexao.pdo.php';
 
-function definirQueAlguemEstaMexendo()
-{
+function definirQueAlguemEstaMexendo() {
     global $con;
     $con->query("INSERT INTO plugin_ambiente (alguem_esta_mexendo) VALUES (1)");
 }
 
-function adicionarVersaoBetaNoTopo()
-{
+function adicionarVersaoBetaNoTopo() {
     $localAtual = pegarLocalAtual();
     $corLocalAtual = pegarCorParaLocalAtual();
     $temaAtualPasta = wp_get_theme()->get_stylesheet();
@@ -40,11 +38,6 @@ function adicionarVersaoBetaNoTopo()
         }
         
         .aviso-dev {
-            /*position: fixed;
-            max-width: 100%;
-            width: 100%;
-            z-index: 9999;
-            left: 0;*/
             display: flex;
             justify-content: space-between;
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
@@ -130,12 +123,12 @@ function adicionarVersaoBetaNoTopo()
         let btnEstouMexendo = document.querySelector(".btnEstouMexendo")
         let btnNaoEstouMexendo = document.querySelector(".btnNaoEstouMexendo")
         let containerMexendo = document.querySelector(".mexendo")
+        let caminhoApi = '<?= plugin_dir_url(__FILE__) ?>conexao.pdo.php'
 
         let estadoDaAplicacao = document.querySelector(".estado")
 
         function pegarEstadoAtual() {
-            let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/estado" ?>'
-            fetch(caminhoApi)
+            fetch(caminhoApi+"?estadoAtual")
             .then(function(resposta) {
                 return resposta.text()
             })
@@ -163,16 +156,14 @@ function adicionarVersaoBetaNoTopo()
         }
 
         function definirEstouMexendo() {
-            let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/mexendo?definirMexendo=2"; ?>'
-            fetch(caminhoApi)
+            fetch(caminhoApi + "?definirMexendo=2")
             .then(function() {
                 pegarEstadoAtual()
             })
         }
 
         function definirNaoEstouMexendo() {
-            let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/mexendo?definirMexendo=1"; ?>'
-            fetch(caminhoApi)
+            fetch(caminhoApi + "?definirMexendo=1")
             .then(function() {
                 pegarEstadoAtual()
             })
@@ -184,14 +175,12 @@ function adicionarVersaoBetaNoTopo()
     <?php
 }
 
-function retornarUrl()
-{
+function retornarUrl() {
     global $wp;
     return home_url($wp->request);
 }
 
-function verificarUrl()
-{
+function verificarUrl() {
     $url = retornarUrl();
     $locais = ["localhost", "dev.evolker", "hom.evolker"];
     $localAtual;
@@ -206,8 +195,7 @@ function verificarUrl()
     return $localAtual;
 }
 
-function pegarCorParaLocalAtual()
-{
+function pegarCorParaLocalAtual() {
     $localAtual = verificarUrl();
 
     if($localAtual === "localhost") {
@@ -220,8 +208,7 @@ function pegarCorParaLocalAtual()
 }
 
 
-function pegarLocalAtual()
-{
+function pegarLocalAtual() {
     $urlAtual = verificarUrl();
 
     if($urlAtual === "dev.evolker") {
@@ -238,35 +225,3 @@ if(!is_admin()) {
 } else {
     add_action( 'wp_before_admin_bar_render', 'adicionarVersaoBetaNoTopo');
 }
-
-function definirEstadoDoAmbiente($data) {
-    $queryParams = $data->get_query_params()["definirMexendo"];
-    global $con;
-
-    if(isset($queryParams)) {
-        if($queryParams === '1') {
-            $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 1 WHERE id = 0");
-        } else if($queryParams === '2') {
-            $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 2 WHERE id = 0");
-        }
-    }
-}
-
-function pegarEstadoDoAmbiente($data) {
-    global $con;
-    $resposta = $con->query("SELECT * FROM plug_ambiente");
-    echo $resposta->fetchAll(PDO::FETCH_ASSOC)[0]["alguem_esta_mexendo"];
-}
-
-add_action('rest_api_init', function () {
-    register_rest_route( 'plug-ambiente/', 'mexendo/', array(
-        'methods' => 'GET',
-        'callback' => 'definirEstadoDoAmbiente',
-    ));
-
-    register_rest_route( 'plug-ambiente/', 'estado/', array(
-        'methods' => 'GET',
-        'callback' => 'pegarEstadoDoAmbiente',
-    ));
-});
-?>
