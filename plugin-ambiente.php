@@ -6,6 +6,7 @@
  * Author:      Evolker Tecnologia
  * Author URI:  https://evolker.com.br
 */
+session_start();
 
 function adicionarVersaoBetaNoTopo()
 {
@@ -102,15 +103,16 @@ function adicionarVersaoBetaNoTopo()
             aviso.style.animation = "someAviso .3s"
             setTimeout(() => {
                 aviso.style.display = "none"
-            }, 300);
+            }, 300)
 
             if(location.href.indexOf("localhost") !== -1) {
-                localStorage.setItem("remover-barra-evolker", "exclua essa tabela para voltar a aparecer a barra")
+                let caminhoApi = '<?= get_site_url()."/wp-json/plug-ambiente/fecharBarra?fechar=1"; ?>'
+                fetch(caminhoApi)
             }
         }
 
         window.onload = () => {
-            if(localStorage.getItem("remover-barra-evolker")) {
+            if(<?= $_SESSION["barraFechada"]? $_SESSION["barraFechada"]: "false" ?>) {
                 aviso.style.display = "none"
             } else {
                 aviso.style.display = "flex"
@@ -175,5 +177,23 @@ if(!is_admin()) {
 } else {
     add_action( 'wp_before_admin_bar_render', 'adicionarVersaoBetaNoTopo');
 }
+
+function fecharBarra($data) {
+    $queryParam = $data->get_query_params()["fechar"];
+    global $con;
+
+    if(isset($queryParam)) {
+        if($queryParam === '1') {
+            $_SESSION["barraFechada"] = 1;
+        }
+    }
+}
+
+add_action('rest_api_init', function () {
+    register_rest_route( 'plug-ambiente/', 'fecharBarra/', array(
+        'methods' => 'GET',
+        'callback' => 'fecharBarra',
+    ));
+});
 
 ?>
