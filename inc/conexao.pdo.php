@@ -4,7 +4,7 @@
 if(defined('ABSPATH')) require ABSPATH . "/wp-config.php";
 else{
     // Pedro Henrique (14/40/2021): gambiarra necessária porque incluindo diretamente o wp-config.php gera uma saída inesperada, causando um bug no front-end.
-    $str = file_get_contents('../../../wp-config.php', true);
+    $str = file_get_contents('../../../../wp-config.php', true);
     $re = '/(define\( ?\'DB_.+ \')(.+)?(\'.*\);)/m';
     preg_match_all($re, $str, $matches);
 

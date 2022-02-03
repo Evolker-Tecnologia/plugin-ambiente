@@ -5,7 +5,6 @@
 }
 
 .container-aviso-dev {
-    display: none;
     z-index: 9999;
     position: fixed;
     left: 0;
