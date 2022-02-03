@@ -1,7 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap');
 
-.aviso-dev-admin {
+.container-aviso-dev-admin {
     left: 1%;
+}
+
+.container-aviso-dev {
+    display: none;
+    z-index: 9999;
+    position: fixed;
+    left: 0;
+    flex-direction: column;
+    width: 100%
 }
 
 .fecha-aviso {
@@ -30,12 +39,10 @@ i.bi {
 }
 
 .aviso-dev {
-    position: fixed;
+    display: flex;
     justify-content: space-between;
     max-width: 100%;
     width: 100%;
-    z-index: 9999;
-    left: 0;
 }
 
 .aviso-dev p a {
@@ -43,6 +50,18 @@ i.bi {
     font-size: 17px;
     font-weight: 500 !important;
     text-decoration: none !important;
+}
+
+.estado {
+    text-align: center; 
+}
+
+.mexendo {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(241 15 15 / 60%) !important;
 }
 
 @keyframes someAviso {
