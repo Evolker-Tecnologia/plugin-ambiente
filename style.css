@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap');
+
+.aviso-dev-admin {
+    left: 1%;
+}
+
+.fecha-aviso {
+    color: #dc3545;
+    font-weight: 800;
+    padding: 5px 10px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color .2s;
+    margin: 0;
+    cursor: pointer;
+}
+
+.fecha-aviso:hover {
+    text-shadow: 0px 0px 10px #dc3545;
+}
+
+i.bi {
+    font-size: 30px;
+}
+
+.aviso-dev p {
+    display: flex;
+    align-items: center;
+    margin: 0 !important;
+}
+
+.aviso-dev {
+    position: fixed;
+    justify-content: space-between;
+    max-width: 100%;
+    width: 100%;
+    z-index: 9999;
+    left: 0;
+}
+
+.aviso-dev p a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+}
+
+@keyframes someAviso {
+    from {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)
+    }
+    to {
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)
+    }
+}
+
+@keyframes apareceAviso {
+    from {
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)
+    }
+    to {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)
+    }
+}
