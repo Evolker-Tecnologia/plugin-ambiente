@@ -44,6 +44,14 @@ i.bi {
     width: 100%;
 }
 
+.container-botoes {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    width: 100%;
+    background-color: rgba(241, 196, 15, .6);
+}
+
 .aviso-dev p a {
     font-family: 'Outfit', sans-serif;
     font-size: 17px;
