@@ -90,7 +90,7 @@ function adicionarBarraSuperior() {
                 } else if(resposta == 2) {
                     btnNaoEstouMexendo.removeAttribute("disabled")
                     btnEstouMexendo.disabled = "true"
-                    estadoDaAplicacao.innerText = "Alguém está mexendo"
+                    estadoDaAplicacao.innerText = "Alguém está editando..."
                     containerMexendo.style.display = "flex"
                 }
             })
