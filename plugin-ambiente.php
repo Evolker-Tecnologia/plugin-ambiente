@@ -7,6 +7,7 @@
  * Author URI:  https://evolker.com.br
  */
 session_start();
+require "inc/alterações.admin.php";
 require "inc/conexao.pdo.php";
 require "inc/utils.rest.php";
 require "inc/utils.php";
