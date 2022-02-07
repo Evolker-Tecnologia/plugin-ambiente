@@ -5,11 +5,20 @@
  * Description: Mostra uma barra fixa no topo mostrando o ambiente em que o projeto está rodando.
  * Author:      Evolker Tecnologia
  * Author URI:  https://evolker.com.br
- */
+*/
 session_start();
-require "inc/conexao.pdo.php";
-require "inc/utils.rest.php";
-require "inc/utils.php";
+require_once "inc/conexao.pdo.php";
+require_once "inc/utils.rest.php";
+require_once "inc/utils.php";
+
+function aoAtivarPlugin() { // ANTONY: por algum motivo a variavel $con aparece como NULL e por isso dá erro na hora de ativar o plugin
+    global $con;
+    $sql = file_get_contents('inc/sql/wp_plugin_ambiente.sql', true);
+    var_dump($con);
+    var_dump($sql);
+    $statement = $con->prepare($sql);
+    $statement->execute();
+}
 
 function adicionarBarraSuperior() {
     $localAtual = pegarLocalAtual();
@@ -132,5 +141,7 @@ if (!is_admin()) {
 } else {
     add_action('wp_before_admin_bar_render', 'adicionarBarraSuperior');
 }
+
+register_activation_hook(__FILE__, "aoAtivarPlugin");
 
 ?>
