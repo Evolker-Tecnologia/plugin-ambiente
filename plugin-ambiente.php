@@ -26,6 +26,9 @@ function adicionarBarraSuperior() {
     <style>
         .aviso-dev {
             background-color: <?= $corLocalAtual["corDeFundo"] ?>;
+        }
+
+        .container-botoes {
             border-bottom: 2px solid<?= $corLocalAtual["corDoTexto"] ?>;
         }
 
@@ -43,21 +46,26 @@ function adicionarBarraSuperior() {
     </style>
 
     <div class="container-aviso-dev <?= is_admin()? 'container-aviso-dev-admin': ''?>">
-        <div class="aviso-dev">
-            <p class="fecha-aviso fecha-aviso-esquerda" onclick="fecharAviso()">
-                <i class="bi bi-x"></i>
-            </p>
-            <p>
-                <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
-                <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Iniciar Alterações</button>
-            </p>
-            <p class="fecha-aviso" onclick="fecharAviso()">
-                <i class="bi bi-x"></i>
-            </p>
+        <div>
+            <div class="aviso-dev">
+                <p class="fecha-aviso fecha-aviso-esquerda" onclick="fecharAviso()">
+                    <i class="bi bi-x"></i>
+                </p>
+                <p>
+                    <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
+                </p>
+                <p class="fecha-aviso" onclick="fecharAviso()">
+                    <i class="bi bi-x"></i>
+                </p>
+            </div>
+            <div class="container-botoes">
+                <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Estou mexendo!</button>
+                <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
+            </div>
         </div>
         <div class="aviso-dev mexendo">
             <span class="estado"></span>
-            <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Finalizar Alterações</button>
+            <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
         </div>
     </div>
 
@@ -84,7 +92,7 @@ function adicionarBarraSuperior() {
                 } else if(resposta == 2) {
                     btnNaoEstouMexendo.removeAttribute("disabled")
                     btnEstouMexendo.disabled = "true"
-                    estadoDaAplicacao.innerText = "Alguém está mexendo"
+                    estadoDaAplicacao.innerText = "Alguém está editando..."
                     containerMexendo.style.display = "flex"
                 }
             })
