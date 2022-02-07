@@ -48,7 +48,7 @@ function adicionarBarraSuperior() {
             </p>
             <p>
                 <a href="https://canaltech.com.br/produtos/O-que-significa-dizer-que-um-software-ou-produto-esta-em-versao-beta/" target="_blank"><?= $temaAtual ?> | <?= $temaAtualPasta ?> <?= $versaoTemaAtual ?> | Ambiente: <?= $localAtual ?></a>
-                <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Estou mexendo!</button>
+                <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Iniciar Alterações</button>
             </p>
             <p class="fecha-aviso" onclick="fecharAviso()">
                 <i class="bi bi-x"></i>
@@ -56,7 +56,7 @@ function adicionarBarraSuperior() {
         </div>
         <div class="aviso-dev mexendo">
             <span class="estado"></span>
-            <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
+            <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Finalizar Alterações</button>
         </div>
     </div>
 
