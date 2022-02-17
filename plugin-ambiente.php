@@ -1,15 +1,10 @@
 <?php
-/*
- * Plugin Name: Plugin Ambiente
- * Version:     0.2
- * Description: Mostra uma barra fixa no topo mostrando o ambiente em que o projeto está rodando.
- * Author:      Evolker Tecnologia
- * Author URI:  https://evolker.com.br
- */
-session_start();
+
 require_once "inc/conexao.pdo.php";
-require_once "inc/utils.rest.php";
+require_once "inc/plugin-ambiente.service.php";
 require_once "inc/utils.php";
+
+session_start();
 
 function aoAtivarPlugin() { // ANTONY: por algum motivo a variavel $con aparece como NULL e por isso dá erro na hora de ativar o plugin
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -24,7 +19,7 @@ function adicionarBarraSuperior() {
     $temaAtual = wp_get_theme()->name;
     $versaoTemaAtual = wp_get_theme()->get("Version");
 ?>
-    <!-- HTML DA BARRA ================================================================= -->
+    <!-- HTML begin =================================================================================================== -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.1/font/bootstrap-icons.min.css" integrity="sha512-WYaDo1TDjuW+MPatvDarHSfuhFAflHxD87U9RoB4/CSFh24/jzUHfirvuvwGmJq0U7S9ohBXy4Tfmk2UKkp2gA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="<?= plugin_dir_url(__FILE__) ?>assets/css/style.css">
 
@@ -50,7 +45,7 @@ function adicionarBarraSuperior() {
         }
     </style>
 
-    <div class="container-aviso-dev <?= is_admin()? 'container-aviso-dev-admin': ''?>">
+    <div class="container-aviso-dev <?= is_admin() ? 'container-aviso-dev-admin' : '' ?>">
         <div>
             <div class="aviso-dev">
                 <p class="fecha-aviso fecha-aviso-esquerda" onclick="fecharAviso()">
@@ -64,8 +59,8 @@ function adicionarBarraSuperior() {
                 </p>
             </div>
             <div class="container-botoes">
-                <button class="btnEstouMexendo" onclick="definirEstouMexendo()" disabled>Estou mexendo!</button>
-                <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
+                <button class="btnEstouMexendo" onclick="iniciarAlteracoes()" disabled>Iniciar alterações</button>
+                <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Finalizar alterações</button>
             </div>
         </div>
         <div class="aviso-dev mexendo">
@@ -74,33 +69,35 @@ function adicionarBarraSuperior() {
         </div>
     </div>
 
+    <!-- [Pedro Henrique] Não podemos isolar esse código porque o PHP não pode ser incorporado em um arquivo Javascript  -->
     <script>
-        let caminhoApi = "<?= get_site_url()."/wp-json/plug-ambiente/" ?>"
-        let btnEstouMexendo = document.querySelector(".btnEstouMexendo")
-        let btnNaoEstouMexendo = document.querySelector(".btnNaoEstouMexendo")
-        let estadoDaAplicacao = document.querySelector(".estado")
-        let containerMexendo = document.querySelector(".mexendo")
-        let containerAviso = document.querySelector(".container-aviso-dev")
-        let aviso = document.querySelector(".aviso-dev")
+        function aoCarregarPagina() {
+            if (<?= isset($_SESSION["barraFechada"]) ? "true" : "false" ?>) {
+                containerAviso.style.display = "none"
+            } else {
+                containerAviso.style.display = "flex"
+                pegarEstadoAtual()
+            }
+        }
 
         function pegarEstadoAtual() {
-            fetch(caminhoApi+"estado?estadoAtual")
-            .then(function(resposta) {
-                return resposta.text()
-            })
-            .then(function(resposta) {
-                if(resposta == 1) {
-                    btnNaoEstouMexendo.disabled = "true"
-                    btnEstouMexendo.removeAttribute("disabled")
-                    estadoDaAplicacao.innerText = ""
-                    containerMexendo.style.display = "none"
-                } else if(resposta == 2) {
-                    btnNaoEstouMexendo.removeAttribute("disabled")
-                    btnEstouMexendo.disabled = "true"
-                    estadoDaAplicacao.innerText = "Alguém está editando..."
-                    containerMexendo.style.display = "flex"
-                }
-            })
+            fetch(caminhoApi)
+                .then(function (resposta) {
+                    return resposta.text()
+                })
+                .then(function (resposta) {
+                    if (resposta == 1) {
+                        btnNaoEstouMexendo.disabled = "true"
+                        btnEstouMexendo.removeAttribute("disabled")
+                        estadoDaAplicacao.innerText = ""
+                        containerMexendo.style.display = "none"
+                    } else if (resposta == 2) {
+                        btnNaoEstouMexendo.removeAttribute("disabled")
+                        btnEstouMexendo.disabled = "true"
+                        estadoDaAplicacao.innerText = "Alguém está editando..."
+                        containerMexendo.style.display = "flex"
+                    }
+                })
         }
 
         function fecharAviso() {
@@ -109,36 +106,40 @@ function adicionarBarraSuperior() {
                 containerAviso.style.display = "none"
             }, 300)
 
-            if("<?= verificarUrl() ?>" === "localhost") {
-                fetch(caminhoApi+"fecharBarra?fechar=1")
+            if ("<?= verificarUrl() ?>" === "localhost") {
+                fetch(caminhoApi, {method: 'DELETE'}
+                )
             }
         }
 
-        function definirEstouMexendo() {
-            fetch(caminhoApi + "mexendo?definirMexendo=2")
-            .then(function() {
-                pegarEstadoAtual()
-            })
+        function iniciarAlteracoes() {
+            fetch(caminhoApi + "?acao=iniciar", {method: 'PUT'})
+                .then(response => {
+                    if (response.ok) {
+                        btnEstouMexendo.disabled = "true"
+                    }
+                })
         }
 
         function definirNaoEstouMexendo() {
             fetch(caminhoApi + "mexendo?definirMexendo=1")
-            .then(function() {
-                pegarEstadoAtual()
-            })
+                .then(function () {
+                    pegarEstadoAtual()
+                })
         }
 
-        window.onload = () => {
-            if(<?= $_SESSION["barraFechada"]? $_SESSION["barraFechada"]: "false" ?>) {
-                containerAviso.style.display = "none"
-            } else {
-                containerAviso.style.display = "flex"
-                pegarEstadoAtual()
-            }
-        }
+        let caminhoApi = "<?= get_site_url() . "/wp-content/plugins/plugin-ambiente/inc/plugin-ambiente.service.php" ?>"
+        let btnEstouMexendo = document.querySelector(".btnEstouMexendo")
+        let btnNaoEstouMexendo = document.querySelector(".btnNaoEstouMexendo")
+        let estadoDaAplicacao = document.querySelector(".estado")
+        let containerMexendo = document.querySelector(".mexendo")
+        let containerAviso = document.querySelector(".container-aviso-dev")
+        let aviso = document.querySelector(".aviso-dev")
+
+        window.onload = aoCarregarPagina;
     </script>
-
-    <?php
+    <!-- HTML end =================================================================================================== -->
+<?php
 }
 
 if (!is_admin()) {
