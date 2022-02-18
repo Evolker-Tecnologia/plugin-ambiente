@@ -1,10 +1,8 @@
 <?php
 
-require_once "inc/conexao.pdo.php";
-require_once "inc/plugin-ambiente.service.php";
-require_once "inc/utils.php";
-
 session_start();
+require_once "inc/conexao.pdo.php";
+require_once "inc/utils.php";
 
 function aoAtivarPlugin() { // ANTONY: por algum motivo a variavel $con aparece como NULL e por isso dá erro na hora de ativar o plugin
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -65,7 +63,6 @@ function adicionarBarraSuperior() {
         </div>
         <div class="aviso-dev mexendo">
             <span class="estado"></span>
-            <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Não estou mexendo!</button>
         </div>
     </div>
 
@@ -86,12 +83,12 @@ function adicionarBarraSuperior() {
                     return resposta.text()
                 })
                 .then(function (resposta) {
-                    if (resposta == 1) {
+                    if (resposta == 1) { // Antony: não está mexendo
                         btnNaoEstouMexendo.disabled = "true"
                         btnEstouMexendo.removeAttribute("disabled")
                         estadoDaAplicacao.innerText = ""
                         containerMexendo.style.display = "none"
-                    } else if (resposta == 2) {
+                    } else if (resposta == 2) { // Antony: está mexendo
                         btnNaoEstouMexendo.removeAttribute("disabled")
                         btnEstouMexendo.disabled = "true"
                         estadoDaAplicacao.innerText = "Alguém está editando..."
@@ -107,8 +104,7 @@ function adicionarBarraSuperior() {
             }, 300)
 
             if ("<?= verificarUrl() ?>" === "localhost") {
-                fetch(caminhoApi, {method: 'DELETE'}
-                )
+                fetch(caminhoApi, {method: 'DELETE'})
             }
         }
 
@@ -118,11 +114,12 @@ function adicionarBarraSuperior() {
                     if (response.ok) {
                         btnEstouMexendo.disabled = "true"
                     }
+                    pegarEstadoAtual()
                 })
         }
 
         function definirNaoEstouMexendo() {
-            fetch(caminhoApi + "mexendo?definirMexendo=1")
+            fetch(caminhoApi + "?acao=finalizar", {method: 'PUT'})
                 .then(function () {
                     pegarEstadoAtual()
                 })
