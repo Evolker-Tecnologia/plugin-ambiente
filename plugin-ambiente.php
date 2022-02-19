@@ -10,6 +10,7 @@
 session_start();
 require_once "inc/conexao.pdo.php";
 require_once "inc/utils.php";
+require_once "inc/plugin-page.admin.php";
 
 function aoAtivarPlugin() { // ANTONY: por algum motivo a variavel $con aparece como NULL e por isso dá erro na hora de ativar o plugin
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -65,12 +66,24 @@ function adicionarBarraSuperior() {
             </div>
             <div class="container-botoes">
                 <button class="btnEstouMexendo" onclick="iniciarAlteracoes()" disabled>Iniciar alterações</button>
-                <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Finalizar alterações</button>
+                <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Ver alterações pendentes</button>
             </div>
         </div>
         <div class="aviso-dev mexendo">
             <span class="estado"></span>
         </div>
+    </div>
+
+    <div class="container-alteracao">
+        <div>
+            <label for="iptAutor">Autor</label>
+            <input type="text" class="iptAutor" id="iptAutor">
+        </div>
+        <div>
+            <label for="iptAlteracao">Descricao</label>
+            <textarea id="iptAlteracao" class="iptAlteracao" cols="30" rows="10"></textarea>
+        </div>
+        <button class="btnRegistrarAlteracao" onclick="confirmarInicioDeAlteracao()">Começar alteração</button>
     </div>
 
     <!-- [Pedro Henrique] Não podemos isolar esse código porque o PHP não pode ser incorporado em um arquivo Javascript  -->
@@ -116,6 +129,10 @@ function adicionarBarraSuperior() {
         }
 
         function iniciarAlteracoes() {
+            containerAlteracao.style.display = "block"
+        }
+        
+        function confirmarInicioDeAlteracao() {
             fetch(caminhoApi + "?acao=iniciar", {method: 'PUT'})
                 .then(response => {
                     if (response.ok) {
@@ -123,6 +140,12 @@ function adicionarBarraSuperior() {
                     }
                     pegarEstadoAtual()
                 })
+            fetch(caminhoApi, {method: 'POST', body: JSON.stringify({
+                autor: iptAutor.value,
+                alteracao: iptAlteracao.value
+            })})
+                .then(response => response.text())
+                .then(response => console.log(response))
         }
 
         function definirNaoEstouMexendo() {
@@ -135,10 +158,13 @@ function adicionarBarraSuperior() {
         let caminhoApi = "<?= get_site_url() . "/wp-content/plugins/plugin-ambiente/inc/plugin-ambiente.service.php" ?>"
         let btnEstouMexendo = document.querySelector(".btnEstouMexendo")
         let btnNaoEstouMexendo = document.querySelector(".btnNaoEstouMexendo")
+        let iptAutor = document.querySelector(".iptAutor")
+        let iptAlteracao = document.querySelector(".iptAlteracao")
         let estadoDaAplicacao = document.querySelector(".estado")
         let containerMexendo = document.querySelector(".mexendo")
         let containerAviso = document.querySelector(".container-aviso-dev")
         let aviso = document.querySelector(".aviso-dev")
+        let containerAlteracao = document.querySelector(".container-alteracao")
 
         window.onload = aoCarregarPagina;
     </script>

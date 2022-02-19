@@ -71,6 +71,28 @@ i.bi {
     background-color: rgb(241 15 15 / 60%) !important;
 }
 
+.container-alteracao {
+    display: none;
+    width: 600px;
+    height: 400px;
+    background-color: white;
+    z-index: 9990;
+    box-shadow: 0px 0px 15px rgb(0 0 0 / 50%);
+    position: fixed;
+    top: calc(50% - 200px);
+    left: calc(50% - 300px);
+}
+
+.container-alteracao div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container-alteracao div * {
+    width: 100%;
+}
+
 @keyframes someAviso {
     from {
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)

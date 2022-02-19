@@ -61,7 +61,27 @@ switch ($metodo) {
         break;
 
     case 'GET':
-        pegarEstadoDoAmbiente();
+        if(isset($_GET["alteracoes"])) {
+            $resultado = $con->query("SELECT * FROM plugin_ambiente_alteracoes");
+            $resultado = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($resultado);
+        } else {
+            pegarEstadoDoAmbiente();
+        }
+
+        break;
+    
+    case 'POST':
+        $conteudo = json_decode($conteudo, true);
+        $autor = $conteudo["autor"];
+        $alteracao = $conteudo["alteracao"];
+
+        try {
+            $con->query("INSERT INTO plugin_ambiente_alteracoes (autor, alteracoes) VALUES ('$autor', '$alteracao')");
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo $e;
+        }
 
         break;
         
