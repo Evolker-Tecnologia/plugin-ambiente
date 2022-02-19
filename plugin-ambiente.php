@@ -1,4 +1,11 @@
 <?php
+/*
+ * Plugin Name: Plugin Ambiente
+ * Version:     0.2
+ * Description: Mostra uma barra fixa no topo mostrando o ambiente em que o projeto está rodando.
+ * Author:      Evolker Tecnologia
+ * Author URI:  https://evolker.com.br
+ */
 
 session_start();
 require_once "inc/conexao.pdo.php";

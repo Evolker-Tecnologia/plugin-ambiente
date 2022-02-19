@@ -1,16 +1,14 @@
---
--- Estrutura da tabela `plug_ambiente`
---
-
-CREATE TABLE `plug_ambiente` (
+CREATE TABLE `plugin_ambiente_situacao` (
   `alguem_esta_mexendo` int(1) DEFAULT 1,
   `id` int(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Extraindo dados da tabela `plug_ambiente`
---
+CREATE TABLE `plugin_ambiente_alteracoes` (
+  `autor` VARCHAR(64),
+  `alteracoes` VARCHAR(256),
+  `id` int NOT NULL PRIMARY KEY
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `plug_ambiente` (`alguem_esta_mexendo`, `id`) VALUES
+INSERT INTO `plugin_ambiente_situacao` (`alguem_esta_mexendo`, `id`) VALUES
 (2, 0);
 COMMIT;

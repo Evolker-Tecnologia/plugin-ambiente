@@ -8,7 +8,7 @@ global $con;
 
 function pegarEstadoDoAmbiente() {
     global $con;
-    $resposta = $con->query("SELECT * FROM plug_ambiente");
+    $resposta = $con->query("SELECT * FROM plugin_ambiente_situacao");
     echo $resposta->fetchAll(PDO::FETCH_ASSOC)[0]["alguem_esta_mexendo"];
 }
 
@@ -18,9 +18,9 @@ function definirEstadoDoAmbiente($data) {
 
     if(isset($queryParams)) {
         if($queryParams === '1') {
-            $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 1 WHERE id = 0");
+            $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 1 WHERE id = 0");
         } else if($queryParams === '2') {
-            $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 2 WHERE id = 0");
+            $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 2 WHERE id = 0");
         }
     }
 }
@@ -41,7 +41,7 @@ switch ($metodo) {
         if ($acao === 'iniciar') {
 
             try {
-                $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 2 WHERE id = 0");
+                $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 2 WHERE id = 0");
             } catch (Exception $e) {
                 http_response_code(500);
                 echo $e;
@@ -49,7 +49,7 @@ switch ($metodo) {
 
         } else if ($acao === 'finalizar') {
             try {
-                $con->query("UPDATE plug_ambiente SET alguem_esta_mexendo = 1 WHERE id = 0");
+                $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 1 WHERE id = 0");
             } catch (Exception $e) {
                 http_response_code(500);
                 echo $e;
