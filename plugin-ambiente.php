@@ -14,7 +14,7 @@ require_once "inc/plugin-page.admin.php";
 
 function aoAtivarPlugin() { // ANTONY: por algum motivo a variavel $con aparece como NULL e por isso dá erro na hora de ativar o plugin
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    $sql = file_get_contents('sql/wp_plugin_ambiente.sql', true);
+    $sql = file_get_contents('sql/wp_plugin_ambiente_ao_instalar.sql', true);
     dbDelta($sql);
 }
 
