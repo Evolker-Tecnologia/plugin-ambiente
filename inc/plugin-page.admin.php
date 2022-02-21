@@ -23,7 +23,6 @@ function pluginAmbienteMenuDeAlteracoes_gerarVisao() {
                 .then(response => response.text())
                 .then(response => {
                     response = JSON.parse(response)
-                    console.log(response)
                     response.forEach(alteracao => {
                         let tr = document.createElement("tr")
                         let tds = {

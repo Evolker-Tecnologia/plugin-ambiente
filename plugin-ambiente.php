@@ -144,8 +144,6 @@ function adicionarBarraSuperior() {
                 autor: iptAutor.value,
                 alteracao: iptAlteracao.value
             })})
-                .then(response => response.text())
-                .then(response => console.log(response))
         }
 
         function definirNaoEstouMexendo() {
