@@ -6,7 +6,8 @@ CREATE TABLE `plugin_ambiente_situacao` (
 CREATE TABLE `plugin_ambiente_alteracoes` (
   `autor` VARCHAR(64),
   `alteracoes` VARCHAR(256),
-  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `foi_confirmada` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `plugin_ambiente_situacao` (`alguem_esta_mexendo`, `id`) VALUES

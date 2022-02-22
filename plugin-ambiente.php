@@ -65,8 +65,10 @@ function adicionarBarraSuperior() {
                 </p>
             </div>
             <div class="container-botoes">
-                <button class="btnEstouMexendo" onclick="iniciarAlteracoes()" disabled>Iniciar alterações</button>
-                <button class="btnNaoEstouMexendo" onclick="definirNaoEstouMexendo()" disabled>Ver alterações pendentes</button>
+                <button class="btnEstouMexendo" onclick="iniciarAlteracoes()">Iniciar alterações</button>
+                <button class="btnFinalizarAlteracoes" onclick="finalizarAlteracoes()">Finalizar alterações</button>
+                <button class="btnCancelar" onclick="definirNaoEstouMexendo()">Cancelar</button>
+                <button class="btnAlteracoes" onclick="verAlteracoes()">Ver alterações pendentes</button>
             </div>
         </div>
         <div class="aviso-dev mexendo">
@@ -83,7 +85,8 @@ function adicionarBarraSuperior() {
             <label for="iptAlteracao">Descricao</label>
             <textarea id="iptAlteracao" class="iptAlteracao" cols="30" rows="10"></textarea>
         </div>
-        <button class="btnRegistrarAlteracao" onclick="confirmarInicioDeAlteracao()">Começar alteração</button>
+        <button class="btnRegistrarAlteracao" onclick="confirmarAlteracao()">Começar alteração</button>
+        <button class="btnCancelarAlteracao" onclick="cancelarConfirmacaoDeAlteracao()">Cancelar alteração</button>
     </div>
 
     <!-- [Pedro Henrique] Não podemos isolar esse código porque o PHP não pode ser incorporado em um arquivo Javascript  -->
@@ -104,17 +107,26 @@ function adicionarBarraSuperior() {
                 })
                 .then(function (resposta) {
                     if (resposta == 1) { // Antony: não está mexendo
-                        btnNaoEstouMexendo.disabled = "true"
-                        btnEstouMexendo.removeAttribute("disabled")
-                        estadoDaAplicacao.innerText = ""
+                        btnCancelar.style.display = "none"
+                        btnEstouMexendo.style.display = "block"
+                        btnFinalizarAlteracoes.style.display = "none"
+                        btnAlteracoes.style.display = "none"
+                        btnCancelar.style.display = "none"
                         containerMexendo.style.display = "none"
+                        estadoDaAplicacao.innerText = ""
                     } else if (resposta == 2) { // Antony: está mexendo
-                        btnNaoEstouMexendo.removeAttribute("disabled")
-                        btnEstouMexendo.disabled = "true"
+                        btnCancelar.style.display = "block"
+                        btnEstouMexendo.style.display = "none"
+                        btnAlteracoes.style.display = "none"
+                        btnCancelar.style.display = "block"
+                        btnFinalizarAlteracoes.style.display = "block"
                         estadoDaAplicacao.innerText = "Alguém está editando..."
                         containerMexendo.style.display = "flex"
                     }
                 })
+            fetch(caminhoApi + "?alteracoes")
+                .then(response => response.text())
+                .then(response => JSON.parse(response).length >= 1 ? btnAlteracoes.style.display = "block" : btnAlteracoes.style.display = "none")
         }
 
         function fecharAviso() {
@@ -129,21 +141,31 @@ function adicionarBarraSuperior() {
         }
 
         function iniciarAlteracoes() {
+            fetch(caminhoApi + "?acao=iniciar", {method: 'PUT'})
+                .then(response => {
+                    cancelarConfirmacaoDeAlteracao()
+                    pegarEstadoAtual()
+                })
+        }
+
+        function finalizarAlteracoes() {
             containerAlteracao.style.display = "block"
         }
         
-        function confirmarInicioDeAlteracao() {
-            fetch(caminhoApi + "?acao=iniciar", {method: 'PUT'})
+        function confirmarAlteracao() {
+            fetch(caminhoApi + "?acao=finalizar", {method: 'PUT'})
                 .then(response => {
-                    if (response.ok) {
-                        btnEstouMexendo.disabled = "true"
-                    }
+                    cancelarConfirmacaoDeAlteracao()
                     pegarEstadoAtual()
                 })
             fetch(caminhoApi, {method: 'POST', body: JSON.stringify({
                 autor: iptAutor.value,
                 alteracao: iptAlteracao.value
             })})
+        }
+
+        function cancelarConfirmacaoDeAlteracao() {
+            containerAlteracao.style.display = "none"
         }
 
         function definirNaoEstouMexendo() {
@@ -153,9 +175,15 @@ function adicionarBarraSuperior() {
                 })
         }
 
+        function verAlteracoes() {
+            location.href = "/" // Antony: achar uma forma de pegar o link de forma dinamica da página do plugin no wordpress
+        }
+
         let caminhoApi = "<?= get_site_url() . "/wp-content/plugins/plugin-ambiente/inc/plugin-ambiente.service.php" ?>"
         let btnEstouMexendo = document.querySelector(".btnEstouMexendo")
-        let btnNaoEstouMexendo = document.querySelector(".btnNaoEstouMexendo")
+        let btnCancelar = document.querySelector(".btnCancelar")
+        let btnAlteracoes = document.querySelector(".btnAlteracoes")
+        let btnFinalizarAlteracoes = document.querySelector(".btnFinalizarAlteracoes")
         let iptAutor = document.querySelector(".iptAutor")
         let iptAlteracao = document.querySelector(".iptAlteracao")
         let estadoDaAplicacao = document.querySelector(".estado")

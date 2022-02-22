@@ -3,7 +3,7 @@
 add_action('admin_menu', 'pluginAmbienteMenuDeAlteracoes_anexarAoPainel');
 
 function pluginAmbienteMenuDeAlteracoes_anexarAoPainel() {
-    add_menu_page('Alterações', 'Alterações', 'manage_options', "alteracoes", 'pluginAmbienteMenuDeAlteracoes_gerarVisao', null, 5);
+    add_menu_page('Plugin Ambiente', 'Plugin Ambiente', 'manage_options', "plugin_ambiente", 'pluginAmbienteMenuDeAlteracoes_gerarVisao', null);
 }
 
 function pluginAmbienteMenuDeAlteracoes_gerarVisao() {
@@ -16,8 +16,14 @@ function pluginAmbienteMenuDeAlteracoes_gerarVisao() {
                 <th>Alteração</th>
             </tr>
         </table>
+        <button onclick="confirmarAlteracoes()">Confirmar alterações</button>
         <script>
-            let tabelaAlteracoes = document.querySelector(".tabela-alteracoes")
+
+            function confirmarAlteracoes() {
+                fetch(caminhoApi + "?acao=alteracoes", { method: "PUT" })
+                    .then(() => location.reload())
+                    .catch(e => console.error(e))
+            }
 
             fetch(caminhoApi + "?alteracoes")
                 .then(response => response.text())
@@ -44,6 +50,8 @@ function pluginAmbienteMenuDeAlteracoes_gerarVisao() {
                         tabelaAlteracoes.appendChild(tr)
                     })
                 })
+            
+            let tabelaAlteracoes = document.querySelector(".tabela-alteracoes")
         </script>
     <?php
 }

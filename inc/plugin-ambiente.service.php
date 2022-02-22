@@ -2,7 +2,7 @@
 
 session_start();
 require_once "conexao.pdo.php";
-//require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+//require_once(ABSPATH . "wp-admin/includes/upgrade.php");
 
 global $con;
 
@@ -17,28 +17,28 @@ function definirEstadoDoAmbiente($data) {
     global $con;
 
     if(isset($queryParams)) {
-        if($queryParams === '1') {
+        if($queryParams === "1") {
             $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 1 WHERE id = 0");
-        } else if($queryParams === '2') {
+        } else if($queryParams === "2") {
             $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 2 WHERE id = 0");
         }
     }
 }
 
-$metodo = $_SERVER['REQUEST_METHOD'];
-$conteudo = file_get_contents('php://input');
+$metodo = $_SERVER["REQUEST_METHOD"];
+$conteudo = file_get_contents("php://input");
 
 switch ($metodo) {
-    case 'DELETE':
+    case "DELETE":
         
         $_SESSION["barraFechada"] = 1;
             
         break;
 
-    case 'PUT':
-        $acao = $_GET['acao'];
+    case "PUT":
+        $acao = $_GET["acao"];
 
-        if ($acao === 'iniciar') {
+        if ($acao === "iniciar") {
 
             try {
                 $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 2 WHERE id = 0");
@@ -47,22 +47,29 @@ switch ($metodo) {
                 echo $e;
             }
 
-        } else if ($acao === 'finalizar') {
+        } else if ($acao === "finalizar") {
             try {
                 $con->query("UPDATE plugin_ambiente_situacao SET alguem_esta_mexendo = 1 WHERE id = 0");
             } catch (Exception $e) {
                 http_response_code(500);
                 echo $e;
             }
-        } else if ($acao === 'confirmar') {
+        } else if ($acao === "confirmar") {
             echo "nao implemetnado...";
+        } else if($acao === "alteracoes") {
+            try {
+                $con->query("UPDATE plugin_ambiente_alteracoes SET foi_confirmada = 1 WHERE foi_confirmada = 0");
+            } catch (Exception $e) {
+                http_response_code(500);
+                echo $e;
+            }
         }
 
         break;
 
-    case 'GET':
+    case "GET":
         if(isset($_GET["alteracoes"])) {
-            $resultado = $con->query("SELECT * FROM plugin_ambiente_alteracoes");
+            $resultado = $con->query("SELECT * FROM plugin_ambiente_alteracoes WHERE foi_confirmada = 0");
             $resultado = $resultado->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($resultado);
         } else {
@@ -71,7 +78,7 @@ switch ($metodo) {
 
         break;
     
-    case 'POST':
+    case "POST":
         $conteudo = json_decode($conteudo, true);
         $autor = $conteudo["autor"];
         $alteracao = $conteudo["alteracao"];
@@ -87,5 +94,5 @@ switch ($metodo) {
         
     default:
 //        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-//        die('{"msg": "Método não encontrado."}');
+//        die("{"msg": "Método não encontrado."}");
 }
