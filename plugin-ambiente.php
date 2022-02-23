@@ -176,7 +176,7 @@ function adicionarBarraSuperior() {
         }
 
         function verAlteracoes() {
-            location.href = "/" // Antony: achar uma forma de pegar o link de forma dinamica da página do plugin no wordpress
+            location.href = "<?php menu_page_url("plugin_ambiente", true) ?>"
         }
 
         let caminhoApi = "<?= get_site_url() . "/wp-content/plugins/plugin-ambiente/inc/plugin-ambiente.service.php" ?>"

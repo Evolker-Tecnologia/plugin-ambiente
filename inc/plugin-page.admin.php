@@ -1,9 +1,9 @@
 <?php
 
-add_action('admin_menu', 'pluginAmbienteMenuDeAlteracoes_anexarAoPainel');
+add_action('after_setup_theme', 'pluginAmbienteMenuDeAlteracoes_anexarAoPainel');
 
 function pluginAmbienteMenuDeAlteracoes_anexarAoPainel() {
-    add_menu_page('Plugin Ambiente', 'Plugin Ambiente', 'manage_options', "plugin_ambiente", 'pluginAmbienteMenuDeAlteracoes_gerarVisao', null);
+    add_menu_page('Plugin Ambiente', 'Plugin Ambiente', 'manage_options', 'plugin_ambiente', 'pluginAmbienteMenuDeAlteracoes_gerarVisao', null, 100);
 }
 
 function pluginAmbienteMenuDeAlteracoes_gerarVisao() {
