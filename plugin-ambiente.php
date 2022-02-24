@@ -10,7 +10,7 @@
 session_start();
 require_once "inc/conexao.pdo.php";
 require_once "inc/utils.php";
-require_once "inc/plugin-page.admin.php";
+require_once "hooks/plugin-page.admin.php";
 
 function aoAtivarPlugin() { // ANTONY: por algum motivo a variavel $con aparece como NULL e por isso dá erro na hora de ativar o plugin
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
