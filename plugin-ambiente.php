@@ -176,7 +176,7 @@ function adicionarBarraSuperior() {
         }
 
         function verAlteracoes() {
-            location.href = "<?php menu_page_url("plugin_ambiente", true) ?>"
+            location.href = "<?= admin_url() . '?page=plugin_ambiente'; ?>" // [Pedro Henrique] Por algum motivo a função menu_page_url('plugin_ambiente') não funciona aqui.
         }
 
         let caminhoApi = "<?= get_site_url() . "/wp-content/plugins/plugin-ambiente/inc/plugin-ambiente.service.php" ?>"
